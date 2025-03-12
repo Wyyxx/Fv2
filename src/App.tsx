@@ -3,7 +3,7 @@ import { GraduationCap, BookOpen, Target, MapPin, Users, ScrollText, Award, Flag
 
 function App() {
   const [activeValue, setActiveValue] = useState<string | null>(null);
-  const [activeObjective, setActiveObjective] = useState<string | null>(null);
+  const [showFloatingButton, setShowFloatingButton] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const carouselImages = [
@@ -19,6 +19,19 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const contactSection = document.getElementById('contacto');
+      if (contactSection) {
+        const rect = contactSection.getBoundingClientRect();
+        setShowFloatingButton(rect.top > window.innerHeight || rect.bottom < 0);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const values = {
     'Excelencia': 'Buscamos la máxima calidad en cada aspecto de nuestra labor educativa.',
     'Responsabilidad': 'Fomentamos el compromiso con las obligaciones académicas y personales.',
@@ -30,7 +43,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Hero Section with Carousel */}
-      <header className="relative">
+      <header className="relative h-screen">
         <div className="absolute inset-0 bg-black/50 z-10"></div>
         {carouselImages.map((image, index) => (
           <div
@@ -49,7 +62,7 @@ function App() {
         {/* Navigation */}
         <nav className="container mx-auto px-6 py-4 flex items-center justify-between relative z-20">
           <div className="flex items-center">
-            <img src="utils/Logo.png" alt="Ortiz Mena Preparatoria" className="h-16" />
+            <GraduationCap className="h-16 w-16 text-white" />
           </div>
           <div className="hidden md:flex space-x-8 text-white">
             <a href="#inicio" className="hover:text-blue-200">Inicio</a>
@@ -62,27 +75,28 @@ function App() {
         </nav>
 
         {/* Hero Content */}
-        <div className="container mx-auto px-6 py-20 relative z-20 text-white h-screen flex items-center">
+        <div className="container mx-auto px-6 relative z-20 text-white h-[calc(100vh-6rem)] flex items-center">
           <div>
             <h1 className="text-5xl font-bold mb-4">Preparatoria Ortiz Mena</h1>
             <p className="text-xl mb-8">Formando líderes del mañana con excelencia académica</p>
-            <a href="#contacto" className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50">
+            <a href="#contacto" className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
               Conoce más
             </a>
           </div>
         </div>
       </header>
 
-      {/* Facebook Button */}
-      <a
-        href="https://facebook.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed right-6 bottom-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all z-50 hover:scale-110"
-        style={{ transition: 'all 0.3s ease' }}
-      >
-        <Facebook className="w-6 h-6" />
-      </a>
+      {/* Floating Facebook Button */}
+      {showFloatingButton && (
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed right-6 bottom-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all z-50 hover:scale-110"
+        >
+          <Facebook className="w-6 h-6" />
+        </a>
+      )}
 
       {/* Main Content Grid */}
       <section className="py-20 bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50">
@@ -166,15 +180,8 @@ function App() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Ubicación 1 */}
             <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="h-64">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d218.82031804339564!2d-106.10020036982682!3d28.655973007600586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1738101833347!5m2!1ses-419!2smx"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                ></iframe>
+              <div className="h-64 relative">
+                <MapPin className="absolute inset-0 m-auto w-12 h-12 text-blue-600" />
               </div>
               <div className="p-6">
                 <h3 className="font-bold text-lg mb-2">Campus Principal</h3>
@@ -192,15 +199,8 @@ function App() {
 
             {/* Ubicación 2 */}
             <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="h-64">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d218.82031804339564!2d-106.10020036982682!3d28.655973007600586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1738101833347!5m2!1ses-419!2smx"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                ></iframe>
+              <div className="h-64 relative">
+                <MapPin className="absolute inset-0 m-auto w-12 h-12 text-blue-600" />
               </div>
               <div className="p-6">
                 <h3 className="font-bold text-lg mb-2">Campus Norte</h3>
@@ -218,15 +218,8 @@ function App() {
 
             {/* Ubicación 3 */}
             <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="h-64">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d218.82031804339564!2d-106.10020036982682!3d28.655973007600586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1738101833347!5m2!1ses-419!2smx"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                ></iframe>
+              <div className="h-64 relative">
+                <MapPin className="absolute inset-0 m-auto w-12 h-12 text-blue-600" />
               </div>
               <div className="p-6">
                 <h3 className="font-bold text-lg mb-2">Campus Sur</h3>
@@ -249,24 +242,43 @@ function App() {
       <section id="contacto" className="bg-blue-600 text-white py-20">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">Contacto</h2>
-          <div className="max-w-2xl mx-auto">
-            <form className="space-y-6">
-              <div>
-                <label className="block mb-2">Nombre</label>
-                <input type="text" className="w-full px-4 py-2 rounded-lg text-gray-900" />
-              </div>
-              <div>
-                <label className="block mb-2">Correo Electrónico</label>
-                <input type="email" className="w-full px-4 py-2 rounded-lg text-gray-900" />
-              </div>
-              <div>
-                <label className="block mb-2">Mensaje</label>
-                <textarea className="w-full px-4 py-2 rounded-lg text-gray-900" rows={4}></textarea>
-              </div>
-              <button type="submit" className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50">
-                Enviar Mensaje
-              </button>
-            </form>
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Contact Form */}
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
+              <form className="space-y-6">
+                <div>
+                  <label className="block mb-2">Nombre</label>
+                  <input type="text" className="w-full px-4 py-2 rounded-lg text-gray-900" />
+                </div>
+                <div>
+                  <label className="block mb-2">Correo Electrónico</label>
+                  <input type="email" className="w-full px-4 py-2 rounded-lg text-gray-900" />
+                </div>
+                <div>
+                  <label className="block mb-2">Mensaje</label>
+                  <textarea className="w-full px-4 py-2 rounded-lg text-gray-900" rows={4}></textarea>
+                </div>
+                <button type="submit" className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                  Enviar Mensaje
+                </button>
+              </form>
+            </div>
+
+            {/* Facebook Section */}
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg flex flex-col items-center justify-center text-center">
+              <Facebook className="w-20 h-20 mb-6" />
+              <h3 className="text-2xl font-bold mb-4">Síguenos en Facebook</h3>
+              <p className="mb-8">Mantente al día con nuestras últimas noticias, eventos y actividades</p>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-flex items-center"
+              >
+                <Facebook className="w-6 h-6 mr-2" />
+                Visitar Página
+              </a>
+            </div>
           </div>
         </div>
       </section>
