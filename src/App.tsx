@@ -66,9 +66,9 @@ function App() {
           </div>
           <div className="hidden md:flex space-x-8 text-white">
             <a href="#inicio" className="hover:text-blue-200">Inicio</a>
-            <a href="#identidad" className="hover:text-blue-200">Identidad</a>
+            {/*<a href="#identidad" className="hover:text-blue-200">Identidad</a>
             <a href="#nosotros" className="hover:text-blue-200">Nosotros</a>
-            <a href="#programas" className="hover:text-blue-200">Programas</a>
+            <a href="#programas" className="hover:text-blue-200">Programas</a>*/}
             <a href="#ubicacion" className="hover:text-blue-200">Ubicación</a>
             <a href="#contacto" className="hover:text-blue-200">Contacto</a>
           </div>
